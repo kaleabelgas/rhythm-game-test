@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3c91c28c020e447b0b2a9bdf1fb21b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BPM: 60
-  beatsAmount: 60
+  BPM: 459
+  beatsAmount: 20
   notes:
   - Beat: 2
     Notes:

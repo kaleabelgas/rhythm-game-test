@@ -80,13 +80,13 @@ public class LevelManager : MonoBehaviour
     {
         if (i >= keys.Length)
         {
-            Debug.Log($"Test complete after {Time.time} seconds; cumulative deviation: {cumulativeDeviation}s; duration - deviation: {Time.time - cumulativeDeviation}\n" +
+            Debug.Log($"Test complete after {Time.timeSinceLevelLoad} seconds; cumulative deviation: {cumulativeDeviation}s; duration - deviation: {Time.timeSinceLevelLoad - cumulativeDeviation}\n" +
                 $"maximum +deviation: {maxPosDeviation}\n" +
                 $"maximum -deviation: {maxNegDeviation}");
         writer.WriteLine($"-----------------------------------------------------------------------");
 
 
-            writer.WriteLine($"Test complete after {Time.time} seconds; cumulative deviation: {cumulativeDeviation}s; duration - deviation: {Time.time - cumulativeDeviation}");
+            writer.WriteLine($"Test complete after {Time.timeSinceLevelLoad} seconds; cumulative deviation: {cumulativeDeviation}s; duration - deviation: {Time.timeSinceLevelLoad - cumulativeDeviation}");
             writer.WriteLine($"maximum +deviation: {maxPosDeviation}");
             writer.WriteLine($"maximum -deviation: {maxNegDeviation}");
             writer.WriteLine($"-----------------------------------------------------------------------");
@@ -119,7 +119,7 @@ public class LevelManager : MonoBehaviour
         //Debug.Log($"Note made at {Time.time * (1 /timePerBeat)}; {LevelDataContainer[keys[i]]}");
 
 
-        lastNoteDuration = Time.time - lastNoteDuration;
+        lastNoteDuration = Time.timeSinceLevelLoad - lastNoteDuration;
 
 
         //Debug.Log($"Duration: {lastDuration}s");
@@ -141,7 +141,7 @@ public class LevelManager : MonoBehaviour
             maxNegDeviation = currentDeviation < maxNegDeviation ? currentDeviation : maxNegDeviation;
         }
 
-        lastNoteDuration = Time.time;
+        lastNoteDuration = Time.timeSinceLevelLoad;
 
         //time = Time.time;
         i++;
