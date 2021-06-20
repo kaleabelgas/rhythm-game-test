@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.IO;
+using System;
+using UnityEditor;
 
 public class LevelManager : MonoBehaviour
 {
@@ -24,14 +27,29 @@ public class LevelManager : MonoBehaviour
 
     private int i = 0;
 
+    private string path = "Assets/BeatDeviationLog.txt";
+
+    private StreamWriter writer;
+
     private void Awake()
     {
 
+        writer = new StreamWriter(path, true);
         secondsPerBeat = 60 / BPM;
 
         Debug.Log($"BPM: {BPM}; # of beats: {beatsAmount}\n" +
             $"Seconds per beat: {secondsPerBeat}\n" +
         $"Estimated time: {secondsPerBeat * beatsAmount}s");
+
+        writer.WriteLine($"-----------------------------------------------------------------------");
+        writer.WriteLine($"{DateTime.Now}");
+        writer.WriteLine($"BPM: {BPM}; # of beats: {beatsAmount}");
+        writer.WriteLine($"Seconds per beat: {secondsPerBeat}");
+        writer.WriteLine($"Estimated time: {secondsPerBeat * beatsAmount}s");
+        writer.WriteLine($"-----------------------------------------------------------------------");
+
+
+
 
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = beatsAmount + 3;
@@ -65,6 +83,17 @@ public class LevelManager : MonoBehaviour
             Debug.Log($"Test complete after {Time.time} seconds; cumulative deviation: {cumulativeDeviation}s; duration - deviation: {Time.time - cumulativeDeviation}\n" +
                 $"maximum +deviation: {maxPosDeviation}\n" +
                 $"maximum -deviation: {maxNegDeviation}");
+        writer.WriteLine($"-----------------------------------------------------------------------");
+
+
+            writer.WriteLine($"Test complete after {Time.time} seconds; cumulative deviation: {cumulativeDeviation}s; duration - deviation: {Time.time - cumulativeDeviation}");
+            writer.WriteLine($"maximum +deviation: {maxPosDeviation}");
+            writer.WriteLine($"maximum -deviation: {maxNegDeviation}");
+            writer.WriteLine($"-----------------------------------------------------------------------");
+            writer.Close();
+
+            AssetDatabase.ImportAsset(path);
+
 
 
             lineRenderer.SetPosition(i, new Vector3(i * (60 / (float)beatsAmount), 0));
@@ -103,6 +132,9 @@ public class LevelManager : MonoBehaviour
             //Debug.Log(60 /(float) notesAmount);
             dataPoint.x = i * (60 / (float)beatsAmount);
             dataPoint.y = (float)currentDeviation * 400;
+
+            writer.WriteLine($"{DateTime.Now} : {currentDeviation}");
+
 
             lineRenderer.SetPosition(i, dataPoint);
             maxPosDeviation = currentDeviation > maxPosDeviation ? currentDeviation : maxPosDeviation;
