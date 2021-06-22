@@ -11,14 +11,23 @@ public class NoteData
     public int Beat;
     public Notes Notes;
 }
+[System.Serializable]
+public struct Notes
+{
+    public bool upNote;
+    public bool downNote;
+    public bool leftNote;
+    public bool rightNote;
+}
 public class LevelManager : MonoBehaviour
 {
 
     [SerializeField] private float BPM;
-    [SerializeField] private int beatsAmount;
     [SerializeField] private NoteData[] notes;
-    
-    private SortedDictionary<int, Notes> LevelDataContainer = new SortedDictionary<int, Notes>();
+
+    private readonly SortedDictionary<int, Notes> LevelDataContainer = new SortedDictionary<int, Notes>();
+
+    public static SortedDictionary<float, Notes> LevelDataSeconds { get; private set; } = new SortedDictionary<float, Notes>();
 
     private float secondsPerBeat;
     private int[] keys;
@@ -31,27 +40,39 @@ public class LevelManager : MonoBehaviour
     private double maxPosDeviation = 0;
     private double maxNegDeviation = 0;
     private int i = 0;
+
+    private NoteSpawner noteSpawner = NoteSpawner.Instance;
     private void Awake()
     {
 
         writer = new StreamWriter(path, true);
         secondsPerBeat = 60 / BPM;
 
-        writer.WriteLine($"-----------------------------------------------------------------------");
-        writer.WriteLine($"{DateTime.Now}");
-        writer.WriteLine($"BPM: {BPM}; # of beats: {beatsAmount}");
-        writer.WriteLine($"Seconds per beat: {secondsPerBeat}");
-        writer.WriteLine($"Estimated time: {secondsPerBeat * beatsAmount}s");
-        writer.WriteLine($"-----------------------------------------------------------------------");
-
         foreach (NoteData note in notes)
         {
             LevelDataContainer.Add(note.Beat, note.Notes);
         }
 
+
         keys = LevelDataContainer.Keys.ToArray();
+
+        foreach(var key in keys)
+        {
+            LevelDataSeconds.Add(key * secondsPerBeat, LevelDataContainer[key]);
+        }
+
+        writer.WriteLine($"-----------------------------------------------------------------------");
+        writer.WriteLine($"{DateTime.Now}");
+        writer.WriteLine($"BPM: {BPM}; # of beats: {keys.Length}");
+        writer.WriteLine($"Seconds per beat: {secondsPerBeat}");
+        writer.WriteLine($"Estimated time: {secondsPerBeat * keys[keys.Length - 1]}s");
+        writer.WriteLine($"-----------------------------------------------------------------------");
     }
-    private void Start() => Invoke(nameof(Step), keys[0] * secondsPerBeat);
+    private void Start()
+    {
+        Invoke(nameof(Step), keys[0] * secondsPerBeat);
+    }
+
     private void InvokeStep()
     {
         if (i < keys.Length)
@@ -75,9 +96,12 @@ public class LevelManager : MonoBehaviour
     {
         lastNoteDuration = Time.timeSinceLevelLoad - lastNoteDuration;
 
+        Debug.Log("Beat!");
+
         if (i > 0)
         {
-            var currentDeviation = lastNoteDuration - secondsPerBeat;
+            //Debug.Log($"{lastNoteDuration}, {(keys[i] - keys[i - 1]) * secondsPerBeat}");
+            var currentDeviation = lastNoteDuration - ((keys[i] - keys[i - 1]) * secondsPerBeat);
             cumulativeDeviation += currentDeviation;
 
             writer.WriteLine($"{DateTime.Now} : {currentDeviation}");
@@ -85,6 +109,9 @@ public class LevelManager : MonoBehaviour
             maxPosDeviation = currentDeviation > maxPosDeviation ? currentDeviation : maxPosDeviation;
             maxNegDeviation = currentDeviation < maxNegDeviation ? currentDeviation : maxNegDeviation;
         }
+
+        NoteSpawner.Instance.Spawn(LevelDataContainer[keys[i]]);
+        //Debug.Log("Note!");
 
         lastNoteDuration = Time.timeSinceLevelLoad;
         i++;
