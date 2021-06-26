@@ -12,25 +12,18 @@ public class HitbarManager : MonoBehaviour
     [Header("Score threshold properties")]
     [SerializeField] private float perfectThreshold = 0.1f;
     [SerializeField] private float goodThreshold = 0.3f;
-    [SerializeField] private float badThreshold = 1.0f;
 
     public static event Action<Score> OnButtonPressed;
 
-    private GameManager gameManager;
-
-    private void Start()
-    {
-        gameManager = GameManager.Instance;
-    }
-
     public void OnUp()
     {
-        var note = gameManager.GetClosestObject(ObjectLists.note, transform.position, out _, 100f);
+        var note = NoteSpawner.ActiveNotes[0].FirstOrDefault();
         if (note == null) return;
 
         var closestNote = LevelManager.LevelDataSeconds.GetClosest(Time.time);
         var delay = Mathf.Abs(Time.time - closestNote);
-        note.GetComponent<Note>().Hit();
+        note.Hit();
+        NoteSpawner.ActiveNotes[0].Remove(note);
 
         if (delay <= perfectThreshold) OnButtonPressed?.Invoke(Score.perfect);
         else if (delay < goodThreshold) OnButtonPressed?.Invoke(Score.good);
@@ -38,12 +31,13 @@ public class HitbarManager : MonoBehaviour
     }
     public void OnDown()
     {
-        var note = gameManager.GetClosestObject(ObjectLists.note, transform.position, out _, 100f);
+        var note = NoteSpawner.ActiveNotes[1].FirstOrDefault();
         if (note == null) return;
 
         var closestNote = LevelManager.LevelDataSeconds.GetClosest(Time.time);
         var delay = Mathf.Abs(Time.time - closestNote);
-        note.GetComponent<Note>().Hit();
+        note.Hit();
+        NoteSpawner.ActiveNotes[1].Remove(note);
 
         if (delay <= perfectThreshold) OnButtonPressed?.Invoke(Score.perfect);
         else if (delay < goodThreshold) OnButtonPressed?.Invoke(Score.good);
@@ -51,26 +45,27 @@ public class HitbarManager : MonoBehaviour
     }
     public void OnLeft()
     {
-        var note = gameManager.GetClosestObject(ObjectLists.note, transform.position, out _, 100f);
+        var note = NoteSpawner.ActiveNotes[2].FirstOrDefault();
         if (note == null) return;
 
         var closestNote = LevelManager.LevelDataSeconds.GetClosest(Time.time);
         var delay = Mathf.Abs(Time.time - closestNote);
-        note.GetComponent<Note>().Hit();
+        note.Hit();
+        NoteSpawner.ActiveNotes[2].Remove(note);
 
         if (delay <= perfectThreshold) OnButtonPressed?.Invoke(Score.perfect);
         else if (delay < goodThreshold) OnButtonPressed?.Invoke(Score.good);
         else OnButtonPressed?.Invoke(Score.bad);
-
     }
     public void OnRight()
     {
-        var note = gameManager.GetClosestObject(ObjectLists.note, transform.position, out _, 100f);
+        var note = NoteSpawner.ActiveNotes[3].FirstOrDefault();
         if (note == null) return;
 
         var closestNote = LevelManager.LevelDataSeconds.GetClosest(Time.time);
         var delay = Mathf.Abs(Time.time - closestNote);
-        note.GetComponent<Note>().Hit();
+        note.Hit();
+        NoteSpawner.ActiveNotes[3].Remove(note);
 
         if (delay <= perfectThreshold) OnButtonPressed?.Invoke(Score.perfect);
         else if (delay < goodThreshold) OnButtonPressed?.Invoke(Score.good);

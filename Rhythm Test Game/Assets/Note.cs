@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class Note : MonoBehaviour
 {
-    [SerializeField] private ObjectLists noteType;
-
     public void Hit()
     {
-        GameManager.Instance.RemoveObjectFromList(noteType, gameObject);
         gameObject.SetActive(false);
         return;
     }
@@ -19,7 +16,6 @@ public class Note : MonoBehaviour
 
     private void OnBecameInvisible()
     {
-        GameManager.Instance.RemoveObjectFromList(noteType, gameObject);
         gameObject.SetActive(false);
     }
 }

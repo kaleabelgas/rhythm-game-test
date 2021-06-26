@@ -404,13 +404,13 @@ MonoBehaviour:
       upNote: 0
       downNote: 1
       leftNote: 0
-      rightNote: 0
+      rightNote: 1
   - Beat: 5
     Notes:
       upNote: 1
       downNote: 1
-      leftNote: 0
-      rightNote: 0
+      leftNote: 1
+      rightNote: 1
   - Beat: 10
     Notes:
       upNote: 0
