@@ -29,23 +29,31 @@ public class NoteSpawner : MonoBehaviour
     {
         if (notes.upNote)
         {
-            var note = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(-4, SpawnOffset), Quaternion.identity);
-            ActiveNotes[0].Add(note.GetComponent<Note>());
+            var noteObj = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(-2, SpawnOffset), Quaternion.identity);
+            var note = noteObj.GetComponent<Note>();
+            note.Index = 0;
+            ActiveNotes[0].Add(note);
         }
         if (notes.downNote)
         {
-            var note = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(4, SpawnOffset), Quaternion.identity);
-            ActiveNotes[1].Add(note.GetComponent<Note>());
+            var noteObj = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(2, SpawnOffset), Quaternion.identity);
+            var note = noteObj.GetComponent<Note>();
+            note.Index = 1;
+            ActiveNotes[1].Add(note);
         }
         if (notes.leftNote)
         {
-            var note = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(-8, SpawnOffset), Quaternion.identity);
-            ActiveNotes[2].Add(note.GetComponent<Note>());
+            var noteObj = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(-6, SpawnOffset), Quaternion.identity);
+            var note = noteObj.GetComponent<Note>();
+            note.Index = 2;
+            ActiveNotes[2].Add(note);
         }
         if (notes.rightNote)
         {
-            var note = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(8, SpawnOffset), Quaternion.identity);
-            ActiveNotes[3].Add(note.GetComponent<Note>());
+            var noteObj = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(6, SpawnOffset), Quaternion.identity);
+            var note = noteObj.GetComponent<Note>();
+            note.Index = 3;
+            ActiveNotes[3].Add(note);
         }
     }
 }

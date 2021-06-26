@@ -221,7 +221,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   perfectThreshold: 0.1
   goodThreshold: 0.3
-  badThreshold: 0.5
 --- !u!114 &188828278
 MonoBehaviour:
   m_ObjectHideFlags: 0

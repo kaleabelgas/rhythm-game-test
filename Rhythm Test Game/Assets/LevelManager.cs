@@ -22,6 +22,7 @@ public struct Notes
 public class LevelManager : MonoBehaviour
 {
 
+    [SerializeField] private float offset;
     [SerializeField] private float BPM;
     [SerializeField] private float fallSpeed;
     [SerializeField] private NoteData[] notes;
@@ -53,9 +54,7 @@ public class LevelManager : MonoBehaviour
         writer = new StreamWriter(path, true);
         secondsPerBeat = 60 / BPM;
 
-        Delay = NoteSpawner.SpawnOffset / fallSpeed;
-
-        Debug.Log(Delay);
+        Delay = (NoteSpawner.SpawnOffset / fallSpeed) + offset;
 
         foreach (NoteData note in notes)
         {
