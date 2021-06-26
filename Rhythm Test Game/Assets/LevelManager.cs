@@ -23,11 +23,15 @@ public class LevelManager : MonoBehaviour
 {
 
     [SerializeField] private float BPM;
+    [SerializeField] private float fallSpeed;
     [SerializeField] private NoteData[] notes;
+
+    public static float FallSpeed { get; private set; }
+    public static float Delay { get; private set; }
 
     private readonly SortedDictionary<int, Notes> LevelDataContainer = new SortedDictionary<int, Notes>();
 
-    public static SortedDictionary<float, Notes> LevelDataSeconds { get; private set; } = new SortedDictionary<float, Notes>();
+    public static List<float> LevelDataSeconds { get; private set; } = new List<float>();
 
     private float secondsPerBeat;
     private int[] keys;
@@ -41,12 +45,17 @@ public class LevelManager : MonoBehaviour
     private double maxNegDeviation = 0;
     private int i = 0;
 
-    private NoteSpawner noteSpawner = NoteSpawner.Instance;
+    private NoteSpawner noteSpawner;
+
     private void Awake()
     {
-
+        FallSpeed = fallSpeed;
         writer = new StreamWriter(path, true);
         secondsPerBeat = 60 / BPM;
+
+        Delay = NoteSpawner.SpawnOffset / fallSpeed;
+
+        Debug.Log(Delay);
 
         foreach (NoteData note in notes)
         {
@@ -58,7 +67,7 @@ public class LevelManager : MonoBehaviour
 
         foreach(var key in keys)
         {
-            LevelDataSeconds.Add(key * secondsPerBeat, LevelDataContainer[key]);
+            LevelDataSeconds.Add((key * secondsPerBeat) + Delay);
         }
 
         writer.WriteLine($"-----------------------------------------------------------------------");
@@ -70,6 +79,7 @@ public class LevelManager : MonoBehaviour
     }
     private void Start()
     {
+        noteSpawner = NoteSpawner.Instance;
         Invoke(nameof(Step), keys[0] * secondsPerBeat);
     }
 
@@ -77,7 +87,7 @@ public class LevelManager : MonoBehaviour
     {
         if (i < keys.Length)
         {
-            Invoke("Step", (keys[i] - keys[i - 1]) * secondsPerBeat);
+            Invoke(nameof(Step), (keys[i] - keys[i - 1]) * secondsPerBeat);
         }
         else
         {
@@ -94,7 +104,7 @@ public class LevelManager : MonoBehaviour
     }
     private void Step()
     {
-        lastNoteDuration = Time.timeSinceLevelLoad - lastNoteDuration;
+        lastNoteDuration = Time.timeSinceLevelLoadAsDouble - lastNoteDuration;
 
         Debug.Log("Beat!");
 
@@ -113,7 +123,7 @@ public class LevelManager : MonoBehaviour
         NoteSpawner.Instance.Spawn(LevelDataContainer[keys[i]]);
         //Debug.Log("Note!");
 
-        lastNoteDuration = Time.timeSinceLevelLoad;
+        lastNoteDuration = Time.timeSinceLevelLoadAsDouble;
         i++;
 
         InvokeStep();

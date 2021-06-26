@@ -5,20 +5,15 @@ using Utils;
 
 public class NoteSpawner : MonoBehaviour
 {
-    [SerializeField] private float spawnOffset;
+    public static float SpawnOffset { get; private set; } = 10;
     public static NoteSpawner Instance { get; private set; }
     private ObjectPooler objectPooler;
 
-    private Vector3 spawnLocation = Vector3.zero;
-
-    private const int barHeight = 12;
-
-
-    private float yPos;
     private void Awake()
     {
         Instance = this;
     }
+
     private void Start()
     {
         objectPooler = ObjectPooler.Instance;
@@ -27,24 +22,26 @@ public class NoteSpawner : MonoBehaviour
     {
         if (notes.upNote)
         {
-            objectPooler.SpawnFromPool(ObjectLists.up, new Vector2(-4, 0), Quaternion.identity);
+            var note = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(-4, SpawnOffset), Quaternion.identity);
+            GameManager.Instance.AddObjectToList(ObjectLists.note, note);
         }
         if (notes.downNote)
         {
-            objectPooler.SpawnFromPool(ObjectLists.down, new Vector2(4, 5), Quaternion.identity);
+            var note = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(4, SpawnOffset), Quaternion.identity);
+            GameManager.Instance.AddObjectToList(ObjectLists.note, note);
+
         }
         if (notes.leftNote)
         {
-            objectPooler.SpawnFromPool(ObjectLists.left, new Vector2(-8, 0), Quaternion.identity);
+            var note = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(-8, SpawnOffset), Quaternion.identity);
+            GameManager.Instance.AddObjectToList(ObjectLists.note, note);
+
         }
         if (notes.rightNote)
         {
-            objectPooler.SpawnFromPool(ObjectLists.right, new Vector2(8, 0), Quaternion.identity);
-        }
-    }
+            var note = objectPooler.SpawnFromPool(ObjectLists.note, new Vector2(8, SpawnOffset), Quaternion.identity);
+            GameManager.Instance.AddObjectToList(ObjectLists.note, note);
 
-    private void Update()
-    {
-        yPos = HelperUtils.TriangleWave(Time.time) * barHeight;
+        }
     }
 }

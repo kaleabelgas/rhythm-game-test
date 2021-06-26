@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum ObjectLists
 {
-    up,
-    down,
-    left,
-    right
+    note,
 }
 /// <summary>
 /// The GameManager class handles a Dictionary of Lists.

@@ -7,5 +7,4 @@ public enum Score
     perfect,
     good,
     bad,
-    missed
 }

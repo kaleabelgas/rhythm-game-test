@@ -202,7 +202,7 @@ Transform:
   m_GameObject: {fileID: 188828272}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 43.1095, y: 0.2811, z: 1}
+  m_LocalScale: {x: 17.86, y: 0.2811, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -219,12 +219,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f281426886858444284fd6ee39bbfecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  barSpeed: 1
-  barHeight: 12
-  missedThreshold: 10
-  badThreshold: 10
-  goodThreshold: 0.3
   perfectThreshold: 0.1
+  goodThreshold: 0.3
+  badThreshold: 0.5
 --- !u!114 &188828278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,17 +351,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pools:
   - type: 0
-    objectPrefab: {fileID: 1291073232634144418, guid: 190759a2636d7f54c97129765dcb6fa8, type: 3}
-    poolSize: 20
-  - type: 1
-    objectPrefab: {fileID: 1291073232634144418, guid: 2aa6ad3c525b6e846a865894093c3a50, type: 3}
-    poolSize: 20
-  - type: 2
     objectPrefab: {fileID: 1291073232634144418, guid: 5bcac0ed360bbc34e98d6f66a50f5d90, type: 3}
-    poolSize: 20
-  - type: 3
-    objectPrefab: {fileID: 1291073232634144418, guid: 11f97925a68264e4fbfd919309c115e2, type: 3}
-    poolSize: 20
+    poolSize: 50
 --- !u!4 &388821856
 Transform:
   m_ObjectHideFlags: 0
@@ -409,6 +397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BPM: 60
+  fallSpeed: 10
   notes:
   - Beat: 2
     Notes:
@@ -501,7 +490,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -525,7 +514,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
